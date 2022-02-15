@@ -128,9 +128,6 @@ class TrainCapsNet3D:
         self.valid_inputs_csv = 'valid_inputs.csv'
         # csv file containing list of outputs for validation:
         self.valid_outputs_csv = 'valid_outputs.csv'
-        # Folder within results folder to save nifti files:
-        # (cropped inputs, predictions, and ground-truth images)
-        self.niftis_folder = 'niftis'
 
         # Determine if backup to S3 should be done:
         self.s3backup = True

@@ -27,7 +27,6 @@ from tqdm import tqdm, trange
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from dipy.io.image import save_nifti
 
 
 # ----------------------------------------------- TrainUNet3D class ------------------------------------------
@@ -214,11 +213,7 @@ class TrainUNet3D:
         # Run trainer:
         self.train()
 
-        # At the end, save validation inputs, outputs and predictions as NifTi files
-        # together with each scan's loss value.
-        self.save_niftis()
-
-        # Finally, backup the results to S3:
+        # Backup the results to S3:
         if self.s3backup:
             self.backup_to_s3()
 
@@ -321,7 +316,6 @@ class TrainUNet3D:
 
                     # Save stats and plots:
                     self.save_stats()
-                    self.save_plots()
                     # Back up results to S3:
                     # self.backup_to_s3()
                     # Update miniepoch counter:

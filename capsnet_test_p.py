@@ -10,7 +10,7 @@
 # Project imports:
 
 from data_loader import AdniDataset, make_image_list
-from segcaps import SegCaps3D
+from capsnet_model import CapsNet3D
 from loss_functions import DiceLoss
 
 # System imports:

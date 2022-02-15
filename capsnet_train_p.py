@@ -60,7 +60,7 @@ class TrainCapsNet3D:
         self.cropshift = (-20, 0, -20)
 
         # Set model:
-        self.model = SegCaps3D()
+        self.model = CapsNet3D()
         # Set initial learning rate:
         self.lr_initial = 0.002
         # Set optimizer: default is Adam optimizer:

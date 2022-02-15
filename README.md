@@ -5,11 +5,9 @@ on brain MR images. For comparison purposes, we also coded 3D U-Nets.
 
 
 Author:
-
 Arman Avesta, MD
 
 Mentors:
-
 Sanjay Aneja, MD,
 Harlan Krumholz, MD, SM, 
 James Duncan, PhD,

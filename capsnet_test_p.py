@@ -1,9 +1,9 @@
 # CapsNet Project
-# This class tests the 3D UNet.
+# This class tests the 3D CapsNet.
 # Aneja Lab | Yale School of Medicine
 # Developed by Arman Avesta, MD
 # Created (5/19/21)
-# Updated (5/26/21)
+# Updated (1/15/22)
 
 # -------------------------------------------------- Imports --------------------------------------------------
 
@@ -96,7 +96,7 @@ class TestCapsNet3D:
         # Determine if backup to S3 should be done:
         self.s3backup = True
         # S3 bucket backup folder for results:
-        self.s3_niftis_folder = 's3://aneja-lab-capsnet/data/results/temp/niftis'
+        self.s3_niftis_folder = 'HIDDEN FOR PUBLIC CODE'
 
         # .......................................................................................................
         ###################################
@@ -304,4 +304,4 @@ class TestCapsNet3D:
 # ------------------------------------------ Run TrainUNet3D Instance ------------------------------------------
 
 # Test the network:
-utest = TestCapsNet3D()
+capstest = TestCapsNet3D()

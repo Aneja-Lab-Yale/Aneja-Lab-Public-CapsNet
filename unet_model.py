@@ -163,12 +163,12 @@ class UpConcatDoubleconv(nn.Module):
 
         if self.xpad:
             # If D/H/W of x2 is smaller than x1, pad x2 to match x1.
-            diffZ = x1.shape[2] - x2.shape[2]
-            diffY = x1.shape[3] - x2.shape[3]
-            diffX = x1.shape[4] - x2.shape[4]
-            x2 = pad(x2, [diffX // 2, diffX - diffX // 2,
-                          diffY // 2, diffY - diffY // 2,
-                          diffZ // 2, diffZ - diffZ // 2])
+            diffD = x1.shape[2] - x2.shape[2]
+            diffH = x1.shape[3] - x2.shape[3]
+            diffW = x1.shape[4] - x2.shape[4]
+            x2 = pad(x2, [diffW // 2, diffW - diffW // 2,
+                          diffH // 2, diffH - diffH // 2,
+                          diffD // 2, diffD - diffD // 2])
 
         # Concatenate x1 and x2:
         x = torch.cat([x1, x2], dim=1)

@@ -132,7 +132,7 @@ class TrainCapsNet3D:
         # Determine if backup to S3 should be done:
         self.s3backup = True
         # S3 bucket backup folder for results:
-        self.s3_results_folder = 'HIDDEN FOR SHARED CODE'
+        self.s3_results_folder = 'HIDDEN FOR PUBLIC CODE'
 
         # .......................................................................................................
         ###################################

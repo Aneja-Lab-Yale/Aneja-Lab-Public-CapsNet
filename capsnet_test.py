@@ -304,4 +304,5 @@ class TestCapsNet3D:
 # ------------------------------------------ Run TrainUNet3D Instance ------------------------------------------
 
 # Test the network:
-capstest = TestCapsNet3D()
+if __name__ == '__main__':
+    capstest = TestCapsNet3D()

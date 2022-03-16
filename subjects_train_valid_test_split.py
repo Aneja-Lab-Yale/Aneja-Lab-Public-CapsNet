@@ -5,7 +5,7 @@
 # Created (3/30/21)
 # Updated (5/4/21)
 
-# ----------------------------------- Imports -----------------------------------
+# ---------------------------------------------- Imports ---------------------------------------------
 
 import os
 import numpy as np
@@ -34,13 +34,13 @@ class SubjectsTrainValidTestSplit:
     This class first puts aside n and m subjects as the validation and test sets.
     Then, it generates paths to all input and ouput files, separately for the subjects in the train, valid & test sets.
     Finally, it generates 7 csv files:
-    - train_inputs: list of paths to input files in the training set
-    - valid_inputs: list of paths to input files in the validation set
-    - test_inputs: list of paths to input files in the test set
-    - train_outputs: list of paths to output files in the training set
-    - valid outputs: list of paths to output files in the validation set
-    - test_outputs: list of paths to output files in the test set
-    - train_valid_test_split_summary: contains the summary of train/test split numbers (subjects and images).
+        - train_inputs: list of paths to input files in the training set
+        - valid_inputs: list of paths to input files in the validation set
+        - test_inputs: list of paths to input files in the test set
+        - train_outputs: list of paths to output files in the training set
+        - valid outputs: list of paths to output files in the validation set
+        - test_outputs: list of paths to output files in the test set
+        - train_valid_test_split_summary: contains the summary of train/test split numbers (subjects and images).
 
     Please set the class parameters in the __init__ below.
     """
@@ -253,4 +253,5 @@ class SubjectsTrainValidTestSplit:
 # ----------------------------------- Split subjects into train & test sets -----------------------------------
 
 # Initiate split instance:
-split = SubjectsTrainValidTestSplit()
+if __name__ == '__main__':
+    split = SubjectsTrainValidTestSplit()

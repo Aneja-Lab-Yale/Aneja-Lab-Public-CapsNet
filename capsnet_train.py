@@ -454,4 +454,5 @@ class TrainCapsNet3D:
 
 # ------------------------------------------- Run TrainCapsNet3D Instance -------------------------------------------
 
-capstrain = TrainCapsNet3D()
+if __name__ == '__main__':
+    capstrain = TrainCapsNet3D()

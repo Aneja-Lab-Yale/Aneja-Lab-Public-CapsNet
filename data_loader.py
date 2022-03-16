@@ -22,8 +22,8 @@ import numpy as np
 class AdniDataset(Dataset):
     """
     This class generates input/target paris for pytorch data loader:
-    > inputs: masked brain MRIs
-    > targets: FreeSurfer segmentations: aparc+aseg.mgz files
+        - Inputs: masked brain MRIs
+        - Targets: FreeSurfer segmentations: aparc+aseg.mgz files
 
     ADNI (Alzheimer's Disease Neuroimaging Initiative) is a data-sharing platform managed by
     LONI (Laboatory of NeuroIMaging), that contains thousands of brain MRIs as well as
@@ -181,7 +181,7 @@ def make_image_list(path_to_images_csv):
 
 
 
-# ---------------------------------------------- AdniDataset testing --------------------------------------------------
+# ------------------------------------------- AdniDataset code  testing -----------------------------------------------
 
 if __name__ == "__main__":
     from pre_processing.mri_slicer import imshow

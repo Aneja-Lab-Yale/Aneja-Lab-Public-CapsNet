@@ -17,16 +17,16 @@ class CapsNet3D(nn.Module):
 	def __init__(self, in_ch=1, out_ch=1, xpad=True):
 		"""
 		Inputs:
-		- in_ch: input channels
-		- out_ch: output channels
-		- xpad: set to True if input shape is not powers of 2.
+			- in_ch: input channels
+			- out_ch: output channels
+			- xpad: set to True if input shape is not powers of 2.
 
 		Dimensions explained:
-		- 'i' and 'o' subscripts respectively represent inputs and outputs.
+			- 'i' and 'o' subscripts respectively represent inputs and outputs.
 			For instance, Ci represents number of input capsule channels.
-		- C: capsule channels = capsule types.
-		- P: pose components = number of elements in the pose vector.
-		- K: kernel size for convolutions.
+			- C: capsule channels = capsule types.
+			- P: pose components = number of elements in the pose vector.
+			- K: kernel size for convolutions.
 		"""
 		super().__init__()
 		self.xpad = xpad
@@ -49,12 +49,11 @@ class CapsNet3D(nn.Module):
 	def forward(self, x):
 		"""
 		Inputs:
-		- x: batch of input images
-		- y: batch of target images
+			- x: batch of input images
 
 		Outputs:
-		- out_seg: segmented image
-		- out_recon: reconstructed image within the target mask
+			- out_seg: segmented image
+			- out_recon: reconstructed image within the target mask
 		"""
 		Conv1 = self.Conv1(x)
 		PrimaryCaps2 = self.PrimaryCaps2(Conv1)
@@ -78,20 +77,20 @@ class CapsNet3D(nn.Module):
 		Concatenates two batches of capsules.
 
 		Inputs:
-		- skip: skip-connection from the downsampling limb of U-Net
-		- x: input from the upsampling limb of U-Net
+			- skip: skip-connection from the downsampling limb of U-Net
+			- x: input from the upsampling limb of U-Net
 
 		Outputs:
-		- concatenated tensor
+			- concatenated tensor
 
 		Dimensions explained:
-		- 's' and 'x' subscripts respectively mean skip-connection input and input from the upsampling limb.
-		- B: batch size
-		- C: capsule channels = capsule types
-		- P: pose components
-		- D: depth
-		- H: height
-		- W: width
+			- 's' and 'x' subscripts respectively mean skip-connection input and input from the upsampling limb.
+			- B: batch size
+			- C: capsule channels = capsule types
+			- P: pose components
+			- D: depth
+			- H: height
+			- W: width
 		"""
 		Bs, Cs, Ps, Ds, Hs, Ws = skip.shape
 		Bx, Cx, Px, Dx, Hx, Wx = x.shape
@@ -123,10 +122,10 @@ class Conv(nn.Module):
 	def forward(self, x):
 		"""
         Input:
-        - x: MRI volumes: [B, 1, Di, Hi, Wi]
+        	- x: MRI volumes: [B, 1, Di, Hi, Wi]
 
         Output:
-        - x: [B, 1, Po, Do, Ho, Wo]
+        	- x: [B, 1, Po, Do, Ho, Wo]
         """
 		x = self.conv(x)                                                    # x: [B, Po, Do, Ho, Wo]
 		return x.unsqueeze(1)                                               # return: [B, 1, Po, Do, Ho, Wo]
@@ -140,14 +139,14 @@ class ConvCaps(nn.Module):
 	def __init__(self, Ci, Pi, Co, Po, K, stride, padding, routings=3):
 		"""
 		Inputs:
-		- Ci: input capsule channels
-		- Pi: input pose components
-		- Co: output capsule channels
-		- Po: output pose components
-		- K: kernel size
-		- stride
-		- padding
-		- routings: dynamic routing iterations
+			- Ci: input capsule channels
+			- Pi: input pose components
+			- Co: output capsule channels
+			- Po: output pose components
+			- K: kernel size
+			- stride
+			- padding
+			- routings: dynamic routing iterations
 		"""
 		super().__init__()
 
@@ -163,22 +162,22 @@ class ConvCaps(nn.Module):
 	def forward(self, x):                                                       # x: [B, Ci, Pi, Di, Hi, Wi]
 		"""
 		Input:
-		- x: batch of input capsules; dimensions: [B, Ci, Pi, Di, Hi, Wi]
+			- x: batch of input capsules; dimensions: [B, Ci, Pi, Di, Hi, Wi]
 
 		Output:
-		- return: batch of output capsules; dimensions: [B, Co, Po, Do, Ho, Wo]
-
+			- return: batch of output capsules; dimensions: [B, Co, Po, Do, Ho, Wo]
+	
 		Dimensions explained:
-		- B: batch size
-		- C: capsule channels = capsule types
-		- P: pose components
-		- D: depth
-		- H: height
-		- W: width
-		- 'i' and 'o' subscripts respectively represent input and output dimensions.
-			For instance, Ci represents the number of input capsule channels,
-			Po represents the number of output pose components in each output capsule,
-			and Ho represents the height of the output image.
+			- B: batch size
+			- C: capsule channels = capsule types
+			- P: pose components
+			- D: depth
+			- H: height
+			- W: width
+			- 'i' and 'o' subscripts respectively represent input and output dimensions.
+				For instance, Ci represents the number of input capsule channels,
+				Po represents the number of output pose components in each output capsule,
+				and Ho represents the height of the output image.
 		"""
 		B, Ci, Pi, Di, Hi, Wi = x.shape
 		assert (Ci, Pi) == (self.Ci, self.Pi)

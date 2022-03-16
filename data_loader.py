@@ -4,7 +4,7 @@
 # Aneja Lab | Yale School of Medicine
 # Developed by Arman Avesta, MD
 # Created (3/30/21)
-# Updated (1/15/22)
+# Updated (3/15/22)
 
 # ----------------------------------------------------- Imports ----------------------------------------------------
 
@@ -126,9 +126,9 @@ class AdniDataset(Dataset):
     # ........................................................................................................
 
     def crop_image(self, image):
-        (x, z, y) = image.shape  # this works if inputs & outputs are in ('L','I','A') coordinate system
+        (x, y, z) = image.shape  # this works if inputs & outputs are in ('L','A','S') coordinate system
         xcrop, ycrop, zcrop = self.crop[0], self.crop[1], self.crop[2]
-        xshift, yshift, zshift = self.cropshift[0], self.cropshift[1], - self.cropshift[2]  # ('L','I','A') system
+        xshift, yshift, zshift = self.cropshift[0], self.cropshift[1], self.cropshift[2]  # ('L','A','S') system
 
         xmid, ymid, zmid = x // 2, y // 2, z // 2
         xdiff, ydiff, zdiff = xcrop // 2, ycrop // 2, zcrop // 2
@@ -156,10 +156,10 @@ class AdniDataset(Dataset):
             zstop = z
         assert (xstart >= 0) and (ystart >= 0) and (zstart >= 0) and (xstop <= x) and (ystop <= y) and (zstop <= z)
 
-        cropped_image = image[xstart:xstop, zstart:zstop, ystart:ystop]     # ('L','I','A') coordinate system
-        crop_coords = np.array([[xstart, xstop],                            # ('L','I','A') coordinate system
-                                [zstart, zstop],
-                                [ystart, ystop]])
+        cropped_image = image[xstart:xstop, ystart:ystop, zstart:zstop]     # ('L','A','S') coordinate system
+        crop_coords = np.array([[xstart, xstop],                            # ('L','A','S') coordinate system
+                                [ystart, ystop],
+                                [zstart, zstop]])
 
         return cropped_image, crop_coords
 
@@ -172,14 +172,12 @@ class AdniDataset(Dataset):
 
 
 
-# -------------------------------------------- make_image_list function -----------------------------------------------
+# ------------------------------------------------- Helper functions ------------------ooo-----------------------------
 
 def make_image_list(path_to_images_csv):
     images_df = pd.read_csv(path_to_images_csv, header=None)
     images_list = list(images_df.iloc[:, 0])
     return images_list
-
-
 
 
 

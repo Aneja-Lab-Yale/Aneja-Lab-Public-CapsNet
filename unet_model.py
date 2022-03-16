@@ -21,9 +21,10 @@ class UNet3D(nn.Module):
 
     def __init__(self, in_ch=1, out_ch=1, xpad=True):
         """
-        :param in_ch: number of input channels into the 3D UNet
-        :param out_ch: number of output channels out of the 3D UNet
-        :param xpad: if the input size is not 2^n in all dimensions, set xpad to True.
+        Inputs:
+            - in_ch: number of input channels into the 3D UNet
+            - out_ch: number of output channels out of the 3D UNet
+            - xpad: if the input size is not 2^n in all dimensions, set xpad to True.
         """
         super().__init__()
 
@@ -47,8 +48,11 @@ class UNet3D(nn.Module):
 
     def forward(self, x):
         """
-        :param x: UNet input; type: torch tensor; dimensions: x[batch, in_channels, Z, Y, X]
-        :return: UNet output; type: torch tensor; dimensions: output[batch, out_channels, Z, Y, x]
+        Input:
+            - x: UNet input; type: torch tensor; dimensions: x[batch, in_channels, Z, Y, X]
+            
+        Output:
+            - UNet output; type: torch tensor; dimensions: output[batch, out_channels, Z, Y, x]
         """
         # Left side of UNet:
         x1 = self.left1(x)
@@ -77,8 +81,9 @@ class Doubleconv(nn.Module):
 
     def __init__(self, in_ch, out_ch):
         """
-        :param in_ch: number of input channels into the DoubleConvolution unit
-        :param out_ch: number of output channels out of the DoubleConvolution unit
+        Inputs:
+            - in_ch: number of input channels into the DoubleConvolution unit
+            - out_ch: number of output channels out of the DoubleConvolution unit
         """
         super().__init__()
         self.doubleconv = nn.Sequential(
@@ -91,8 +96,11 @@ class Doubleconv(nn.Module):
 
     def forward(self, x):
         """
-        :param x: torch tensor; dimensions: x[batch, channels, D, H, W]
-        :return: x --> conv3d --> batch_norm --> ReLU --> conv3d --> batch_norm --> ReLU --> output
+        Input:
+        - x: torch tensor; dimensions: x[batch, channels, D, H, W]
+        
+        Output:
+             - return: x --> conv3d --> batch_norm --> ReLU --> conv3d --> batch_norm --> ReLU --> output
         """
         return self.doubleconv(x)
 
@@ -106,8 +114,9 @@ class DownDoubleconv(nn.Module):
 
     def __init__(self, in_ch, out_ch):
         """
-        :param in_ch: number of input channels into the Down unit
-        :param out_ch: number of output channels out of the Down unit
+        Inputs:
+            - in_ch: number of input channels into the Down unit
+            - out_ch: number of output channels out of the Down unit
         """
         super().__init__()
         self.maxpool_doubleconv = nn.Sequential(
@@ -116,9 +125,11 @@ class DownDoubleconv(nn.Module):
 
     def forward(self, x):
         """
-        :param x: torch tensor; dimensions: x[batch, channels, D, H, W]
-
-        :return: x --> maxpool3d --> DoubleConv Unit --> output
+        Input:
+            - x: torch tensor; dimensions: x[batch, channels, D, H, W]
+            
+        Output:
+            - return: x --> maxpool3d --> DoubleConv Unit --> output
         """
         return self.maxpool_doubleconv(x)
 
@@ -132,12 +143,13 @@ class UpConcatDoubleconv(nn.Module):
 
     def __init__(self, in_ch, out_ch, xpad=True, up_mode='transposed'):
         """
-        :param in_ch: number of input channels into the Up unit
-        :param out_ch: number of output channels out of the Up unit
-        :param xpad: set this to False only if the input D/H/W dimensions are all powers of two. Otherwise set
-                        this to True.
-        :param up_mode: default is 'transposed'. Set this to 'trilinear' if you want trilinear interpolation
-                        instead (but interpolation would make the network slow).
+        Inputs:
+            - in_ch: number of input channels into the Up unit
+            - out_ch: number of output channels out of the Up unit
+            - xpad: set this to False only if the input D/H/W dimensions are all powers of two. Otherwise set
+                            this to True.
+            - up_mode: default is 'transposed'. Set this to 'trilinear' if you want trilinear interpolation
+                            instead (but interpolation would make the network slow).
         """
         super().__init__()
         self.xpad = xpad
@@ -152,10 +164,12 @@ class UpConcatDoubleconv(nn.Module):
 
     def forward(self, x1, x2):
         """
-        :param x1: horizontal input from the left side of UNet; dimensions: x1[batch, channels, Z, Y, X]
-        :param x2: vertical input from the lower-level right side of UNet; dimensions: x2[batch, channels, Z, Y, X]
-
-        :return: up-scale x2 --> concatenate(x1, x2) --> DoubleConv Unit --> output
+        Inputs:
+            - x1: horizontal input from the left side of UNet; dimensions: x1[batch, channels, Z, Y, X]
+            - x2: vertical input from the lower-level right side of UNet; dimensions: x2[batch, channels, Z, Y, X]
+        
+        Output:
+            - return: up-scale x2 --> concatenate(x1, x2) --> DoubleConv Unit --> output
         """
         x2 = self.up(x2)
 
@@ -185,8 +199,9 @@ class Outconv(nn.Module):
 
     def __init__(self, in_ch, out_ch):
         """
-        :param in_ch: number of input channels into the final output unit
-        :param out_ch: number of output channels out of the entire 3D UNet
+        Inputs:
+            - in_ch: number of input channels into the final output unit
+            - out_ch: number of output channels out of the entire 3D UNet
         """
         super().__init__()
         self.conv_sigmoid = nn.Sequential(

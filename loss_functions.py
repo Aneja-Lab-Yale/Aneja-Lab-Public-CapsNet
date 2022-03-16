@@ -19,15 +19,15 @@ class DiceLoss(nn.Module):
 	def __init__(self, reduction='mean', conversion='none', threshold=.5, low=0.1, high=0.9, s=10, eps=1):
 		"""
 		Inputs:
-		- reduction: 'mean' or 'none'.
-			'mean': return the mean loss for all examples in the batch.
-			'none': return the tensor of losses for B examples in the batch.
-		- conversion: see convert_preds function below to see the possible options.
-		- threshold: threshold used on convert_preds function (see below).
-		- low: low margin used in convert_preds function (see below).
-		- high: high margin used in convert_preds function (see below)
-		- s: scaling factor used in convert_preds function (see below)
-		- eps: to ensure that the denominators are not equal to zero.
+			- reduction: 'mean' or 'none'.
+				'mean': return the mean loss for all examples in the batch.
+				'none': return the tensor of losses for B examples in the batch.
+			- conversion: see convert_preds function below to see the possible options.
+			- threshold: threshold used on convert_preds function (see below).
+			- low: low margin used in convert_preds function (see below).
+			- high: high margin used in convert_preds function (see below)
+			- s: scaling factor used in convert_preds function (see below)
+			- eps: to ensure that the denominators are not equal to zero.
 		"""
 		super().__init__()
 		self.reduction = reduction
@@ -41,14 +41,14 @@ class DiceLoss(nn.Module):
 	def forward(self, preds, targets):
 		"""
 		Inputs:
-		- preds: predictions = model outputs = proposed segmentations
-		- targets: ground truth = actual segmentations
+			- preds: predictions = model outputs = proposed segmentations
+			- targets: ground truth = actual segmentations
 
-		preds and targets should have the same shape: [B, C, D, H, W]
-		B: batches, C: channels, D: depth, H: height, W: width.
+			preds and targets should have the same shape: [B, C, D, H, W]
+			B: batches, C: channels, D: depth, H: height, W: width.
 
 		Output:
-		- dice score: scalar if reduction='mean', and a tensor with B components if reduction='none'.
+			- dice score: scalar if reduction='mean', and a tensor with B components if reduction='none'.
 		"""
 		preds = convert_preds(preds, self.conversion, self.threshold, self.low, self.high, self.s)
 
@@ -241,26 +241,26 @@ def convert_preds(preds, conversion='none', threshold=0.5, low=0.1, high=0.9, s=
 	predictions (model outputs) --> converted predictions (to be used in loss function)
 
 	Inputs:
-	- preds: predictions = model outputs = proposed segmentations.
-	- conversion: how preds should be converted. Options: 'margin', 'threshold', 'sigmoid', 'logit', 'none'
-	- threshold: only used if conversion is set as 'threshold'.
-	- low: low margin; only used if coversion is set to 'margin1' or 'margin2'.
-	- high: high margin; only used of coversion is set to 'margin1' or 'margin2'.
-	- s: scaling factor for sigmoid function.
-		s=10 --> low, high ≈ 0.1, 0.9
-		s=15 --> low, high ≈ 0.2, 0.8
-		s=20 --> low, high ≈ 0.3, 0.7
+		- preds: predictions = model outputs = proposed segmentations.
+		- conversion: how preds should be converted. Options: 'margin', 'threshold', 'sigmoid', 'logit', 'none'
+		- threshold: only used if conversion is set as 'threshold'.
+		- low: low margin; only used if coversion is set to 'margin1' or 'margin2'.
+		- high: high margin; only used of coversion is set to 'margin1' or 'margin2'.
+		- s: scaling factor for sigmoid function.
+			s=10 --> low, high ≈ 0.1, 0.9
+			s=15 --> low, high ≈ 0.2, 0.8
+			s=20 --> low, high ≈ 0.3, 0.7
 
 	Output:
-	- converted predictions
+		- converted predictions
 
 	Conversion options:
-	- 'margin1': preds --> 0 if preds < low; preds if low < preds < high; 1 if preds > high
-	- 'margin2': preds --> 0 if preds < low; (preds - low) / (high - low) if low < preds < high; 1 if preds > high
-	- 'threshold': preds --> 0 if preds < threshold; 1 if preds >= threshold
-	- 'sigmoid': preds --> sigmoid(preds)
-	- 'logit': preds --> logit(preds)
-	- 'none': returnds preds themselves
+		- 'margin1': preds --> 0 if preds < low; preds if low < preds < high; 1 if preds > high
+		- 'margin2': preds --> 0 if preds < low; (preds - low) / (high - low) if low < preds < high; 1 if preds > high
+		- 'threshold': preds --> 0 if preds < threshold; 1 if preds >= threshold
+		- 'sigmoid': preds --> sigmoid(preds)
+		- 'logit': preds --> logit(preds)
+		- 'none': returnds preds themselves
 	"""
 	if conversion == 'none':
 		return preds
@@ -313,45 +313,45 @@ def convert_preds(preds, conversion='none', threshold=0.5, low=0.1, high=0.9, s=
 
 # -------------------------------------------------- Test code --------------------------------------------------
 
-# if __name__ == "__main__":
-#
-# 	import os
-# 	from torch.utils.data import DataLoader
-# 	from unet3d.data_loader import AdniDataset, make_image_list
-# 	from pre_processing.mri_slicer import imshow
-#
-# 	np.set_printoptions(precision=1, suppress=True)
-# 	torch.set_printoptions(precision=1, sci_mode=False)
-#
-# 	#######################################################
-#
-# 	project_root = '/Users/arman/projects/capsnet'
-# 	images_csv = 'data/datasets_local/train_inputs.csv'
-# 	masks_csv = 'data/datasets_local/train_outputs.csv'
-#
-# 	images_path = os.path.join(project_root, images_csv)
-# 	masks_path = os.path.join(project_root, masks_csv)
-#
-# 	image_list = make_image_list(images_path)
-# 	mask_list = make_image_list(masks_path)
-#
-# 	adni = AdniDataset(image_list, mask_list, maskcode=14, crop=(64, 64, 64), cropshift=(0, 7, 0), testmode=False)
-# 	dataloader = DataLoader(dataset=adni, batch_size=4, shuffle=True)
-# 	itr = iter(dataloader)
-#
-# 	try:
-# 	    images, masks = next(itr)
-# 	except StopIteration:
-# 	    itr = iter(dataloader)
-# 	    images, masks = next(itr)
-#
-# 	print(f'images --> shape: {images.shape}; data type: {images.dtype}; min: {images.min()}; max: {images.max()}')
-# 	print(f'masks --> shape: {masks.shape}; data type: {masks.dtype}; unique values: {masks.unique()}')
-#
-# 	# imshow(images)
-# 	# imshow(masks)
-#
-# 	diceloss = DiceLoss(reduction='none')
-#
-# 	loss = diceloss(masks, masks)
-# 	print(f'loss: {loss}, loss type: {type(loss)}')
+if __name__ == "__main__":
+
+	import os
+	from torch.utils.data import DataLoader
+	from unet3d.data_loader import AdniDataset, make_image_list
+	from pre_processing.mri_slicer import imshow
+
+	np.set_printoptions(precision=1, suppress=True)
+	torch.set_printoptions(precision=1, sci_mode=False)
+
+	#######################################################
+
+	project_root = '/Users/arman/projects/capsnet'
+	images_csv = 'data/datasets_local/train_inputs.csv'
+	masks_csv = 'data/datasets_local/train_outputs.csv'
+
+	images_path = os.path.join(project_root, images_csv)
+	masks_path = os.path.join(project_root, masks_csv)
+
+	image_list = make_image_list(images_path)
+	mask_list = make_image_list(masks_path)
+
+	adni = AdniDataset(image_list, mask_list, maskcode=14, crop=(64, 64, 64), cropshift=(0, 7, 0), testmode=False)
+	dataloader = DataLoader(dataset=adni, batch_size=4, shuffle=True)
+	itr = iter(dataloader)
+
+	try:
+	    images, masks = next(itr)
+	except StopIteration:
+	    itr = iter(dataloader)
+	    images, masks = next(itr)
+
+	print(f'images --> shape: {images.shape}; data type: {images.dtype}; min: {images.min()}; max: {images.max()}')
+	print(f'masks --> shape: {masks.shape}; data type: {masks.dtype}; unique values: {masks.unique()}')
+
+	imshow(images)
+	imshow(masks)
+
+	diceloss = DiceLoss(reduction='none')
+
+	loss = diceloss(masks, masks)
+	print(f'loss: {loss}, loss type: {type(loss)}')

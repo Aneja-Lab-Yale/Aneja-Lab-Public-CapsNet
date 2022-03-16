@@ -18,7 +18,6 @@ class UNet3D(nn.Module):
     """
     This class defines the architecture of the 3D UNet
     """
-
     def __init__(self, in_ch=1, out_ch=1, xpad=True):
         """
         Inputs:
@@ -46,6 +45,8 @@ class UNet3D(nn.Module):
 
         self.out = Outconv(64, out_ch)
 
+        
+    
     def forward(self, x):
         """
         Input:
@@ -78,7 +79,6 @@ class Doubleconv(nn.Module):
     """
     DoubleConvolution units in the 3D UNet
     """
-
     def __init__(self, in_ch, out_ch):
         """
         Inputs:
@@ -94,6 +94,8 @@ class Doubleconv(nn.Module):
             nn.BatchNorm3d(out_ch),
             nn.ReLU(inplace=True))
 
+        
+        
     def forward(self, x):
         """
         Input:
@@ -111,7 +113,6 @@ class DownDoubleconv(nn.Module):
     Units in the left side of the 3D UNet:
     Down-sample using MaxPool3d --> then DoubleConvolution
     """
-
     def __init__(self, in_ch, out_ch):
         """
         Inputs:
@@ -123,6 +124,8 @@ class DownDoubleconv(nn.Module):
             nn.MaxPool3d(kernel_size=2, stride=2),
             Doubleconv(in_ch, out_ch))
 
+        
+        
     def forward(self, x):
         """
         Input:
@@ -140,7 +143,6 @@ class UpConcatDoubleconv(nn.Module):
     Units in the right side of the 3D UNet:
     Up-scale using ConvTranspose3d --> Concatenate the bottom and horizontal channels --> DoubleConvolution
     """
-
     def __init__(self, in_ch, out_ch, xpad=True, up_mode='transposed'):
         """
         Inputs:
@@ -162,6 +164,8 @@ class UpConcatDoubleconv(nn.Module):
 
         self.doubleconv = Doubleconv(in_ch, out_ch)
 
+        
+        
     def forward(self, x1, x2):
         """
         Inputs:
@@ -196,7 +200,6 @@ class Outconv(nn.Module):
     """
     Output unit in the 3D UNet
     """
-
     def __init__(self, in_ch, out_ch):
         """
         Inputs:
@@ -208,6 +211,8 @@ class Outconv(nn.Module):
             nn.Conv3d(in_ch, out_ch, kernel_size=1),
             nn.Sigmoid())
 
+        
+        
     def forward(self, x):
         return self.conv_sigmoid(x)
 

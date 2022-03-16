@@ -455,4 +455,5 @@ class TrainUNet3D:
 
 # ------------------------------------------ Run TrainUNet3D Instance ------------------------------------------
 
-utrain = TrainUNet3D()
+if __name__ == '__main__':
+    utrain = TrainUNet3D()

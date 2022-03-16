@@ -301,4 +301,5 @@ class TestUNet3D:
 # ------------------------------------------ Run TrainUNet3D Instance ------------------------------------------
 
 # Test the network:
-utest = TestUNet3D()
+if __name__ == '__main__':
+    utest = TestUNet3D()

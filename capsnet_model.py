@@ -183,7 +183,7 @@ class ConvCaps(nn.Module):
 		assert (Ci, Pi) == (self.Ci, self.Pi)
 		x = x.reshape(B*Ci, Pi, Di, Hi, Wi)                                 # x: [B*Ci, Pi, Di, Hi, Wi]
 		x = self.conv(x)
-		B_Ci, Co_Po, Do, Ho, Wo = x.shape                                   # x: [B*Ci, Co*Po, Do, Ho, Do]
+		B_Ci, Co_Po, Do, Ho, Wo = x.shape                                   # x: [B*Ci, Co*Po, Do, Ho, Wo]
 		assert (B_Ci, Co_Po) == (B*Ci, self.Co*self.Po)
 		x = x.reshape(B, Ci, self.Co, self.Po, Do, Ho, Wo)                  # x: [B, Ci, Co, Po, Do, Ho, Wo]
 		return dynamic_routing(x, self.biases, self.routings)               # return: [B, Co, Po, Do, Ho, Wo]
@@ -212,7 +212,7 @@ class DeconvCaps(nn.Module):
 		assert (Ci, Pi) == (self.Ci, self.Pi)
 		x = x.reshape(B*Ci, Pi, Di, Hi, Wi)                                 # x: [B*Ci, Pi, Di, Hi, Wi]
 		x = self.conv(x)
-		B_Ci, Co_Po, Do, Ho, Wo = x.shape                                   # x: [B*Ci, Co*Po, Do, Ho, Do]
+		B_Ci, Co_Po, Do, Ho, Wo = x.shape                                   # x: [B*Ci, Co*Po, Do, Ho, Wo]
 		assert (B_Ci, Co_Po) == (B*Ci, self.Co*self.Po)
 		x = x.reshape(B, Ci, self.Co, self.Po, Do, Ho, Wo)                  # x: [B, Ci, Co, Po, Do, Ho, Wo]
 		return dynamic_routing(x, self.biases, self.routings)

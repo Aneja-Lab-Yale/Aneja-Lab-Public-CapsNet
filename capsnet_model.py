@@ -121,12 +121,12 @@ class Conv(nn.Module):
 
 	def forward(self, x):
 		"""
-        Input:
-        	- x: MRI volumes: [B, 1, Di, Hi, Wi]
+        	Input:
+        		- x: MRI volumes: [B, 1, Di, Hi, Wi]
 
-        Output:
-        	- x: [B, 1, Po, Do, Ho, Wo]
-        """
+        	Output:
+        		- x: [B, 1, Po, Do, Ho, Wo]
+        	"""
 		x = self.conv(x)                                                    # x: [B, Po, Do, Ho, Wo]
 		return x.unsqueeze(1)                                               # return: [B, 1, Po, Do, Ho, Wo]
 

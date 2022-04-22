@@ -382,7 +382,7 @@ class TrainUNet3D:
             - validation_losses.csv (columns: validation epochs (after each training miniepoch),
                                     rows: validation examples)
 
-            These files are saved in the directory set by self.rerulst_folder
+            These files are saved in the directory set by self.resulst_folder
         """
         # Remove previous summary stats:
         self.train_epoch_losses.drop(index='averages', errors='ignore', inplace=True)

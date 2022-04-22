@@ -317,7 +317,8 @@ class TrainUNet3D:
                     # Save stats and plots:
                     self.save_stats()
                     # Back up results to S3:
-                    # self.backup_to_s3()
+                    if self.s3backup:
+                        self.backup_to_s3()		                    
                     # Update miniepoch counter:
                     self.miniepoch += 1
 

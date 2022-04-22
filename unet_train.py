@@ -91,7 +91,7 @@ class TrainUNet3D:
         # .......................................................................................................
 
         # Set number of training epochs:
-        self.n_epochs = 10
+        self.n_epochs = 100
 
         # Number of training cases in each miniepoch:
         '''

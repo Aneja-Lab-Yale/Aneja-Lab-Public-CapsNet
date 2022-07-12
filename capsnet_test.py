@@ -44,20 +44,27 @@ class TestCapsNet3D:
         # Set segmentation target:
         self.output_structure = 'right hippocampus'
         # Set FreeSurfer code for segmentation target:
-        # to find the code, open any aparc+aseg.mgz in FreeView and change color coding to lookup table
+        # to find the code, open any aparc+aseg.mgz in FreeView and change color coding to lookup table.
+        # These are the segmentation codes in the "segmented_brain.nii.gz":
+        # 3rd ventricle: 14
+        # right thalamus: 49
+        # right hippocampus: 53
         self.output_code = 53
 
+        # Set cropshift:
+        # The input image should be in the standard radiology nifti format ('L','A','S'). 
+        # These are the coordinates of the crobshift for 3rd ventricle, thalamus, and hippocampus:
+        # 3rd ventricle: (0, 7, 0)
+        # right thalamus: (-10, 0, 4)
+        # right hippocampus: (-20, 0, -20)
+        self.cropshift = (-20, 0, -20)
+        
         # Set the size of the cropped volume:
         # if this is set to 100, the center of the volumed is cropped with the size of 100 x 100 x 100.
         # if this is set to (100, 64, 64), the center of the volume is cropped with size of (100 x 64 x 64).
         # note that 100, 64 and 64 here respectively represent left-right, posterior-anterior,
         # and inferior-superior dimensions, i.e. standard radiology coordinate system ('L','A','S').
         self.crop = (64, 64, 64)
-        # Set cropshift:
-        # if the target structure is right hippocampus, the crop box may be shifted to right by 20 pixels,
-        # anterior by 5 pixels, and inferior by 20 pixels --> cropshift = (-20, 5, -20);
-        # note that crop and cropshift here are set here using standard radiology system ('L','A','S'):
-        self.cropshift = (-20, 0, -20)
 
         # Set loss function: options are DiceLoss, DiceBCELoss, and IoULoss:
         self.criterion = DiceLoss(conversion='threshold', reduction='none')
@@ -66,23 +73,29 @@ class TestCapsNet3D:
         self.project_root = '/home/arman_avesta/capsnet'
 
         # Saved model paths:
+        # change project_root and saved_model_folder to match where you save the model
         self.saved_model_folder = 'data/results/temp'
-        self.saved_model_filename = 'saved_model.pth.tar'
+        self.saved_model_filename = 'saved_model.pth.tar'       
 
         # Testing dataset paths:
         self.datasets_folder = 'data/datasets'
         # Testing on validation or test set:
         self.set = 'validation set'
         # csv file containing list of inputs for testing:
-        self.test_inputs_csv = 'valid_inputs.csv'
-        # csv file containing list of outputs for testing:
-        self.test_outputs_csv = 'valid_outputs.csv'
+        # If you want to segment the sample brain.nii.gz MRI volume, just put one line in the CSV file pointing to the path of the brain.nii.gz:
+        self.test_inputs_csv = 'test_inputs.csv'
+        # csv file containing list of ground-truth outputs for testing:
+        # Same here: if you want to run testing on the sample brain_segmented.nii.gz, put one line in the CSV file poining to the path of 
+        # brain_segmented.nii.gz file:
+        self.test_outputs_csv = 'test_outputs.csv'
         # csv file to which testing losses will be saved:
 
         # Set batch size (upper limit is determined by GPU memory):
+        # if you're running the code on the sample brain.nii.gz file, change the batch size to 1.
         self.batch_size = 16
 
         # Set model: UNet3D
+        # change it to UNet3D() if you're testing the UNet.
         self.model = CapsNet3D()
 
         # .......................................................................................................
